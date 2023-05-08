@@ -1,41 +1,25 @@
-variable "project_id" {
-  type        = string
-  description = "project ID"
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.53, < 5.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 3.53, < 5.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 2.2"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-three-tier-app/v0.1.5"
+  }
 }
 
-variable "region" {
-  type        = string
-  description = "Compute Region"
-}
-
-variable "zone" {
-  type        = string
-  description = "Compute Zone"
-}
-
-variable "app_name" {
-  type        = string
-  description = "prefix for app."
-  default     = "todo-list-app"
-}
-
-variable "labels" {
-  type        = map(string)
-  description = "map of labels."
-  default     = { "todo-list-app" = true }
-}
-
-variable "enable_apis" {
-  type        = string
-  description = "enable apis."
-  default     = true
-}
-
-variable "run_roles" {
-  description = "roles used by cloud run service"
-  type        = list(string)
-  default = [
-    "roles/cloudsql.instanceUser",
-    "roles/cloudsql.client",
-  ]
+data "google_project" "project" {
+  project_id = var.project_id
 }
